@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.ScrollPaneConstants;
 
-import ResonanceComponents.MyScrollPane;
+import net.aegistudio.resonance.uicomponents.MyScrollPane;
 
 @SuppressWarnings("serial")
 public class TestFrame extends JFrame{

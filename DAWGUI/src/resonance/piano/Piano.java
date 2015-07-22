@@ -60,7 +60,7 @@ public class Piano extends Component{
 	}
 	
 	public Dimension getSize(){
-		return new Dimension(whiteKeyWidth + 10, whiteKeyHeight * SIZE_OF_SCALE * SCALE_COUNT + 10);
+		return new Dimension(whiteKeyWidth, whiteKeyHeight * SIZE_OF_SCALE * SCALE_COUNT);
 	}
 	
 	public void paint(Graphics g) {
@@ -100,7 +100,21 @@ public class Piano extends Component{
 			int[] key = getKey(x, y);
 			int isWhite = key[0];
 			int keyIndex = key[1];
-			state[isWhite][keyIndex] = 0;
+			System.out.println(isWhite + " " + keyIndex);
+			if(keyIndex != -1){
+				state[isWhite][keyIndex] = 0;
+			}
+			else{
+				for(int i=0; i<2; i++){
+					for(int cur_state : state[i]){
+						if(state[i][cur_state] != 0){//TODO
+							state[i][cur_state] = 0;
+							System.out.println(i + " " + cur_state + " ss");
+							repaint();
+						}
+					}
+				}
+			}
 			repaint();
 		}
 		
@@ -108,7 +122,7 @@ public class Piano extends Component{
 	
 	private int[] getKey(double x, double y){
 		int isWhite = 0;
-		int keyIndex = 0;
+		int keyIndex = -1;
 		if((x >= 0) && (x <= whiteKeyWidth) && (y >= 0) && (y <= whiteKeyHeight * SIZE_OF_SCALE * SCALE_COUNT)){
 			if(x <= blackKeyWidth){
 				for(int i=0; i<SIZE_OF_BLACK_KEY * SCALE_COUNT; i++){
