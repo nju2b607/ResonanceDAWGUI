@@ -100,16 +100,15 @@ public class Piano extends Component{
 			int[] key = getKey(x, y);
 			int isWhite = key[0];
 			int keyIndex = key[1];
-			System.out.println(isWhite + " " + keyIndex);
+	//		System.out.println(isWhite + " " + keyIndex);
 			if(keyIndex != -1){
 				state[isWhite][keyIndex] = 0;
 			}
 			else{
 				for(int i=0; i<2; i++){
-					for(int cur_state : state[i]){
-						if(state[i][cur_state] != 0){//TODO
-							state[i][cur_state] = 0;
-							System.out.println(i + " " + cur_state + " ss");
+					for(int j=0; j<state[i].length; j++){
+						if(state[i][j] == 1){
+							state[i][j] = 0;
 							repaint();
 						}
 					}
