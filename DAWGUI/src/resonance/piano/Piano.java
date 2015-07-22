@@ -100,7 +100,6 @@ public class Piano extends Component{
 			int[] key = getKey(x, y);
 			int isWhite = key[0];
 			int keyIndex = key[1];
-	//		System.out.println(isWhite + " " + keyIndex);
 			if(keyIndex != -1){
 				state[isWhite][keyIndex] = 0;
 			}

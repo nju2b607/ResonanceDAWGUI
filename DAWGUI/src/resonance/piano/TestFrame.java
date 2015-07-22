@@ -44,6 +44,9 @@ public class TestFrame extends JFrame{
 		msp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		msp.setOpaque(true);
 		
+		msp.doLayout();
+		msp.getVerticalScrollBar().setValue(panel.getSize().height / 2);
+		
 		panel.setPreferredSize(new Dimension(msp.getWidth() - 50, 1771));
 		
 
