@@ -1,9 +1,0 @@
-readme
-
--------------introduction of this package----------------
-this package contains of some java ui components whose attributes have been defined
-in order to adjust to the overall style of our daw
-
--------------directions---------------
-these classes extend class in package awt or swing,they can be used directly
-I have write some example code in the class annotation
