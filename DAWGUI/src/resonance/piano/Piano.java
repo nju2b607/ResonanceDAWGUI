@@ -1,7 +1,9 @@
 package resonance.piano;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -11,37 +13,32 @@ import javax.swing.ImageIcon;
 /**
  * @author okamiji
  */
+
 @SuppressWarnings("serial")
 public class Piano extends Component{
 
-	final int SCALE_COUNT = 11;
-	final int SIZE_OF_SCALE = 12;
-	final int SIZE_OF_WHITE_KEY = 7;
-	final int SIZE_OF_BLACK_KEY = 5;
-	
-	final ImageIcon[] whiteKey = {new ImageIcon("picture/whiteKeyIdle.png"), new ImageIcon("picture/whiteKeyPressed.png")};
-	final ImageIcon[] blackKey = {new ImageIcon("picture/blackKeyIdle.png"), new ImageIcon("picture/blackKeyPressed.png")};
-	
-	int[] stateOfWhiteKey;
-	int[] stateOfBlackKey;
-	int[][] state;
-	
-	int whiteKeyWidth;
-	int whiteKeyHeight;
-	int blackKeyWidth;
-	int blackKeyHeight;
-	
-	String[] whiteKeyName = {};
-	String[] blackKeyName = {};
-			
-	int[] blackKeyLocation;
-	
-	public Piano(){		
-		whiteKeyWidth = new ImageIcon("picture/whiteKeyIdle.png").getIconWidth();
-		whiteKeyHeight = new ImageIcon("picture/whiteKeyIdle.png").getIconHeight();
-		blackKeyWidth = new ImageIcon("picture/blackKeyIdle.png").getIconWidth();
-		blackKeyHeight = new ImageIcon("picture/blackKeyIdle.png").getIconHeight();
+	private final int SCALE_COUNT = KeyParam.SCALE_COUNT;
+	private final int SIZE_OF_SCALE = KeyParam.SIZE_OF_SCALE;
+	private final int SIZE_OF_WHITE_KEY = KeyParam.SIZE_OF_WHITE_KEY;
+	private final int SIZE_OF_BLACK_KEY = KeyParam.SIZE_OF_BLACK_KEY;
 
+	private final int whiteKeyWidth = KeyParam.whiteKeyWidth;
+	private final int whiteKeyHeight = KeyParam.whiteKeyHeight;
+	private final int blackKeyWidth = KeyParam.blackKeyWidth;
+	private final int blackKeyHeight = KeyParam.blackKeyHeight;
+	
+	private final ImageIcon[] whiteKey = {new ImageIcon("picture/whiteKeyIdle.png"), new ImageIcon("picture/whiteKeyPressed.png")};
+	private final ImageIcon[] blackKey = {new ImageIcon("picture/blackKeyIdle.png"), new ImageIcon("picture/blackKeyPressed.png")};
+	
+	private int[] stateOfWhiteKey;
+	private int[] stateOfBlackKey;
+	private int[][] state;
+	
+		
+	private int[] blackKeyLocation;
+	
+	public Piano(){
+		
 		stateOfWhiteKey = new int[SIZE_OF_WHITE_KEY * SCALE_COUNT];
 		for(int i=0; i<SIZE_OF_WHITE_KEY * SCALE_COUNT; i++){
 			stateOfWhiteKey[i] = 0;
@@ -57,6 +54,7 @@ public class Piano extends Component{
 		this.setSize(whiteKeyWidth, whiteKeyHeight * SIZE_OF_SCALE * SCALE_COUNT);
 		
 		this.addMouseListener(adapter);
+		
 	}
 	
 	public Dimension getSize(){
@@ -64,10 +62,12 @@ public class Piano extends Component{
 	}
 	
 	public void paint(Graphics g) {
+		
 		//draw white keys
 		for(int i=0; i<SIZE_OF_WHITE_KEY * SCALE_COUNT; i++){
 			g.drawImage(whiteKey[state[0][i]].getImage(), 0, whiteKeyHeight * i, this);
 		}
+		
 		//draw black keys & get location of each single black key
 		int location = - blackKeyHeight / 2;
 		blackKeyLocation = new int[SIZE_OF_BLACK_KEY * SCALE_COUNT];
@@ -79,9 +79,18 @@ public class Piano extends Component{
 			g.drawImage(blackKey[state[1][i]].getImage(), 0, location, this);
 			location += whiteKeyHeight;
 		}
+		
+		//write keys' names
+		Font font = new Font("微软雅黑", Font.PLAIN, 10);
+		g.setFont(font);
+		g.setColor(Color.GRAY);
+		for(int i=0; i<SCALE_COUNT; i++){
+			g.drawString(("c" + (SCALE_COUNT - i - 1)).toString(), (int) (0.7 * whiteKeyWidth), (int) (- 0.25 * whiteKeyHeight + (i + 1) * SIZE_OF_WHITE_KEY * whiteKeyHeight)); 
+		}
+		
 	}
 
-	MouseAdapter adapter = new MouseAdapter(){
+	private MouseAdapter adapter = new MouseAdapter(){
 		public void mousePressed(MouseEvent e) {
 			double x = e.getX();
 			double y = e.getY();
