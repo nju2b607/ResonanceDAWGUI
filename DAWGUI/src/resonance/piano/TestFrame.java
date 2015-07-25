@@ -22,10 +22,16 @@ public class TestFrame extends JFrame{
 		this.setLayout(null);
 		this.setResizable(false);
 		this.setVisible(true);
-		this.setBounds(350, 100, 700, 600);		
+		this.setBounds(350, 50, 800, 1000);		
 		
-		init_components();
+	//	init_components();
 		
+		PianoRoll roll = new PianoRoll(500, 500);
+		roll.setLocation(0, 0);
+		this.add(roll);
+		
+		this.revalidate();
+		this.repaint();
 	}
 	
 	public void init_components(){
@@ -38,11 +44,11 @@ public class TestFrame extends JFrame{
 		
 		Piano piano = new Piano();
 		piano.setSize(piano.getSize());
-		piano.setLocation(20, 10);
+		piano.setLocation(20, 18);
 		panel.add(piano);
 
 		GridChooser chooser = new GridChooser();
-		chooser.setLocation((int) piano.getLocation().getX() + KeyParam.whiteKeyWidth, (int) piano.getLocation().getY() - 5);
+		chooser.setLocation((int) piano.getLocation().getX() + KeyParam.whiteKeyWidth, (int) piano.getLocation().getY() - 23);
 		panel.add(chooser);
 		
 		MyScrollPane msp = new MyScrollPane(panel);

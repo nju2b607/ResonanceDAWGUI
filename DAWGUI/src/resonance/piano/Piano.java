@@ -61,6 +61,21 @@ public class Piano extends Component{
 		return new Dimension(whiteKeyWidth, whiteKeyHeight * SIZE_OF_SCALE * SCALE_COUNT);
 	}
 	
+	protected void enlighten(int isWhite, int keyIndex){
+		state[isWhite][keyIndex] = 1;
+		repaint();
+	}
+	protected void goOff(int isWhite, int keyIndex){
+		if(state[isWhite][keyIndex] == 1){
+			state[isWhite][keyIndex] = 0;
+		}
+		else{
+			releasePressedKey();
+		}
+		repaint();
+	}
+	
+	
 	public void paint(Graphics g) {
 		
 		//draw white keys
@@ -110,17 +125,15 @@ public class Piano extends Component{
 			int isWhite = key[0];
 			int keyIndex = key[1];
 			if(keyIndex != -1){
-				state[isWhite][keyIndex] = 0;
+				if(state[isWhite][keyIndex] == 1){
+					state[isWhite][keyIndex] = 0;
+				}
+				else{
+					releasePressedKey();
+				}
 			}
 			else{
-				for(int i=0; i<2; i++){
-					for(int j=0; j<state[i].length; j++){
-						if(state[i][j] == 1){
-							state[i][j] = 0;
-							repaint();
-						}
-					}
-				}
+				releasePressedKey();
 			}
 			repaint();
 		}
@@ -148,6 +161,17 @@ public class Piano extends Component{
 			}
 		}
 		return new int[]{isWhite, keyIndex};
+	}
+	
+	private void releasePressedKey(){
+		for(int i=0; i<2; i++){
+			for(int j=0; j<state[i].length; j++){
+				if(state[i][j] == 1){
+					state[i][j] = 0;
+					repaint();
+				}
+			}
+		}
 	}
 	
 }
