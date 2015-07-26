@@ -42,15 +42,20 @@ public class MyScrollBarUI extends BasicScrollBarUI{
            int h = thumbBounds.height - 1;
            Paint oldPaint = g2.getPaint();
 
-           g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                   RenderingHints.VALUE_ANTIALIAS_ON);
+//           g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+//                   RenderingHints.VALUE_ANTIALIAS_ON);
 
            g2.translate(thumbBounds.x, thumbBounds.y);
 
-           Shape arcRect = new Rectangle2D.Float(0.0f, 0.0f, (float) w, (float) h);
+           Shape arcRect= new Rectangle2D.Float(0.0f, 0.0f, (float) w, (float) h);
+           if (scrollbar.getOrientation() == JScrollBar.VERTICAL) {
+        	   arcRect = new Rectangle2D.Float(0.0f, 0.0f, (float) w, (float) h);
+           }else if(scrollbar.getOrientation() == JScrollBar.HORIZONTAL){
+        	   arcRect = new Rectangle2D.Float(0.0f, 0.0f, (float) h, (float) w);
+           }
 
            g2.fill(arcRect);
-           g2.setColor( MyColor.DARKERGREY.getColor());
+           g2.setColor( MyColor.DARKWHITE.getColor());
            g2.draw(arcRect);
            g2.setPaint(oldPaint);
     }
@@ -60,14 +65,14 @@ public class MyScrollBarUI extends BasicScrollBarUI{
     	   Graphics2D g2 = (Graphics2D) g;
            Paint backgroupRectPaint = null;
 
-           g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                   RenderingHints.VALUE_ANTIALIAS_ON);
-               backgroupRectPaint = new GradientPaint(0, 0,MyColor.BLACK.getColor(),
-                       trackBounds.width, 0,MyColor.BLACK.getColor());
+//           g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+//                   RenderingHints.VALUE_ANTIALIAS_ON);
+               backgroupRectPaint = new GradientPaint(0, 0,MyColor.GREY.getColor(),
+                       trackBounds.width, 0,MyColor.GREY.getColor());
            g2.setPaint(backgroupRectPaint);
            g2.fillRect(trackBounds.x, trackBounds.y, trackBounds.width, trackBounds.height);
            
-           g2.setColor(MyColor.BLACK.getColor());
+           g2.setColor(MyColor.GREY.getColor());
            g2.drawRect(trackBounds.x, trackBounds.y, trackBounds.width, trackBounds.height);
     }
     protected javax.swing.JButton createDecreaseButton(int orientation) {
@@ -83,11 +88,11 @@ public class MyScrollBarUI extends BasicScrollBarUI{
 				super.paint(g);
                 GradientPaint backgroupRectPaint = null;
                 if (scrollbar.getOrientation() == JScrollBar.VERTICAL) {
-                    backgroupRectPaint = new GradientPaint(0, 0,  MyColor.BLACK.getColor(),
-                            getWidth(), 0,  MyColor.BLACK.getColor());
+                    backgroupRectPaint = new GradientPaint(0, 0,  MyColor.DARKWHITE.getColor(),
+                            getWidth(), 0,  MyColor.DARKWHITE.getColor());
                 } else {
-                    backgroupRectPaint = new GradientPaint(0, 0,  MyColor.BLACK.getColor(),
-                            0, getHeight(),  MyColor.BLACK.getColor());
+                    backgroupRectPaint = new GradientPaint(0, 0,  MyColor.DARKWHITE.getColor(),
+                            0, getHeight(),  MyColor.DARKWHITE.getColor());
                 }
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setPaint(backgroupRectPaint);
@@ -164,11 +169,11 @@ public class MyScrollBarUI extends BasicScrollBarUI{
 				super.paint(g);
                 GradientPaint backgroupRectPaint = null;
                 if (scrollbar.getOrientation() == JScrollBar.VERTICAL) {
-                    backgroupRectPaint = new GradientPaint(0, 0,  MyColor.BLACK.getColor(),
-                            getWidth(), 0,  MyColor.BLACK.getColor());
+                    backgroupRectPaint = new GradientPaint(0, 0,  MyColor.DARKWHITE.getColor(),
+                            getWidth(), 0,  MyColor.DARKWHITE.getColor());
                 } else {
-                    backgroupRectPaint = new GradientPaint(0, 0,  MyColor.BLACK.getColor(),
-                            0, getHeight(), MyColor.BLACK.getColor());
+                    backgroupRectPaint = new GradientPaint(0, 0,  MyColor.DARKWHITE.getColor(),
+                            0, getHeight(), MyColor.DARKWHITE.getColor());
                 }
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setPaint(backgroupRectPaint);
