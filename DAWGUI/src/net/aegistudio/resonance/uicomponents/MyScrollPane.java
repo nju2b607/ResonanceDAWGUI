@@ -27,7 +27,7 @@ public class MyScrollPane extends JScrollPane{
 
 		JScrollBar scroll1=new JScrollBar();
 		scroll1.setUI(new MyScrollBarUI());
-		JScrollBar scroll2=new JScrollBar();
+		JScrollBar scroll2=new JScrollBar(JScrollBar.HORIZONTAL);
 		scroll2.setUI(new MyScrollBarUI());
 		this.setBorder(new MatteBorder(1,1,1,1,MyColor.DARKESTGREY.getColor()));
 		this.getViewport().setBackground(MyColor.BLACK.getColor());
