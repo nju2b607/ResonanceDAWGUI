@@ -8,35 +8,32 @@ import java.util.ArrayList;
 
 public class ActionRecords {
 	
-	private static final int CAPACITY = 30;
-	
-	private static ArrayList<int[]> records = null;
+	private ArrayList<Grid> records;
 	private int index;
 	
-	private ActionRecords(){}
+	protected ActionRecords(){
+		records = new ArrayList<Grid>();
+		index = -1;
+	}
 	
-	public void addRecord(int xStart, int yStart, int xEnd, int yEnd){
-		if((index + 1) == CAPACITY){
-			records.remove(0);
-			index -- ;
-		}
-		if(records == null){
-			records = new ArrayList<int[]>();
-			index = -1;
-		}
-		records.add(new int[]{xStart, yStart, xEnd, yEnd});
+	protected void addRecord(Grid grid){
+		records.add(grid);
 		index ++;
 	}
 	
-	public int[] getRecord(){
-		int[] record = records.remove(index);
+	protected Grid removeRecord(){
+		Grid grid = records.remove(index);
 		index --;
 		if(index == -1){
 			return null;
 		}
 		else{
-			return record;
+			return grid;
 		}
+	}
+	
+	protected ArrayList<Grid> getAllRecords(){
+		return records;
 	}
 	
 }

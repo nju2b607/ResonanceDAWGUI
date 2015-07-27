@@ -5,10 +5,9 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
-
-import net.aegistudio.resonance.uicomponents.MyScrollPane;
 
 /**
  * @author okamiji
@@ -16,6 +15,9 @@ import net.aegistudio.resonance.uicomponents.MyScrollPane;
 
 @SuppressWarnings("serial")
 public class GridChooser extends JPanel{
+
+	private int beatsPerMeasure;
+	private ActionRecords records;
 	
 	private final int whiteKeyHeight = KeyParam.whiteKeyHeight;
 
@@ -36,17 +38,18 @@ public class GridChooser extends JPanel{
 	private int gridCount;
 	private int gridInterval;
 	
-	private int beatsPerMeasure;
-	
 	private int[][] state;
 	private final int IDLE = 0;
-	private final int ENTERED = 1;
-	private final int PRESSED = 2;
+	private final int PRESSED = 1;
 	private int sign;
 	private int theX;
 	private int theY;
 	
 	public GridChooser(){
+		
+		beatsPerMeasure = 4;
+		records = new ActionRecords();
+		
 		gridHeightThree = whiteKeyHeight * 3 / 5;
 		gridHeightFive = whiteKeyHeight * 4 / 7;
 		
@@ -55,8 +58,6 @@ public class GridChooser extends JPanel{
 		
 		gridCount = 40;
 		gridInterval = 50;
-		
-		beatsPerMeasure = 4;
 		
 		vlineLocation = new int[SCALE_COUNT * SIZE_OF_SCALE + 1];
 		hlineLocation = new int[gridCount + 1];
@@ -148,57 +149,77 @@ public class GridChooser extends JPanel{
 		}
 		
 		//change color of grid
-		int changingIsWhite = -1;
-		int changingKeyIndex = -1;
-		if(sign == ENTERED){
-			changingIsWhite = getKey(theY)[0];
-			changingKeyIndex = getKey(theY)[1];
-			int x1 = theX / gridInterval;
-			x1 *= gridInterval;
-			int x2 = x1 + gridInterval;
-			int xStart = getHorizontalLocation(theX, x1, x2, beatsPerMeasure);
-			int yHeight = getVerticalLocation(theY, vlineLocation);
-			System.out.println("x: " + theX + "  y: " + theY);
-			System.out.print("xStart: " + xStart + "  yHeight: " + yHeight);
-			g.setColor(Color.blue);
-			g.fillRect(xStart, theY, x2 - xStart, yHeight);
-		}
-		else if(sign == PRESSED){
-			changingIsWhite = getKey(theY)[0];
-			changingKeyIndex = getKey(theY)[1];
-		}
+	/*	int changingIsWhite = getKey(theY)[0];
+		int changingKeyIndex = getKey(theY)[1];
 		
-		
-		
+		int x1 = theX / gridInterval;
+		x1 *= gridInterval;
+		int x2 = x1 + gridInterval;
+		int xStart = getHorizontalLocation(theX, x1, x2, beatsPerMeasure);
+		int[] yValue = getVerticalLocation(theY, vlineLocation);
+		int yStart = yValue[0];
+		int yHeight = yValue[1];
+		int beatIndex = yValue[2];
+		g.setColor(Color.blue);
+		g.fillRect(xStart, yStart, x2 - xStart, yHeight);
+		*/
 		
 	}
 	
+	private void paintNewGrid(){
+
+		int changingIsWhite = getKey(theY)[0];
+		int changingKeyIndex = getKey(theY)[1];
+		
+		int x1 = theX / gridInterval;
+		x1 *= gridInterval;
+		int x2 = x1 + gridInterval;
+		int xStart = getHorizontalLocation(theX, x1, x2, beatsPerMeasure);
+		int[] yValue = getVerticalLocation(theY, vlineLocation);
+		int yStart = yValue[0];
+		int yHeight = yValue[1];
+		int beatIndex = yValue[2];
+		
+		Grid grid = new Grid(xStart, yStart, x2 - xStart, yHeight,
+				changingIsWhite, changingKeyIndex, beatIndex, beatsPerMeasure);
+		
+		this.add(grid);
+		
+		addRecord(grid);
+	}
+	
+	private void paintSelectedGrids(){
+		for(Grid grid : getRecords()){
+			
+		}
+	}
+	
+	private void addRecord(Grid g){
+		records.addRecord(g);
+	}
+	private ArrayList<Grid> getRecords(){
+		return records.getAllRecords();
+	}
+	private Grid removeRecord(){
+		return records.removeRecord();
+	}
 	
 	private MouseAdapter adapter = new MouseAdapter(){
+		
 		public void mousePressed(MouseEvent e){
 			theX = e.getX();
 			theY = e.getY();
-			int isWhite = getKey(theY)[0];
-			int keyIndex = getKey(theY)[1];
-			sign = ENTERED;
 			
+			sign = PRESSED;
 			repaint();
 		}
 		public void mouseReleased(MouseEvent e){
 			theX = e.getX();
 			theY = e.getY();
-			int isWhite = getKey(theY)[0];
-			int keyIndex = getKey(theY)[1];
 			
+			sign = IDLE;
 		}
-		public void mouseEntered(MouseEvent e){
-			theX = e.getX();
-			theY = e.getY();
-			int isWhite = getKey(theY)[0];
-			int keyIndex = getKey(theY)[1];
-			
-			
-		}
+		
 	};	
 	
 	private int[] getKey(double y){
@@ -245,17 +266,21 @@ public class GridChooser extends JPanel{
 		}
 		return return_value;
 	}
-	private int getVerticalLocation(int y, int[] lineLocation){
-		int return_value = -1;
+	private int[] getVerticalLocation(int y, int[] lineLocation){
+		int startLocation = -1;
+		int height = -1;
+		int beatIndex = -1;
 		for(int i=0; i<lineLocation.length; i++){
 			if((y > lineLocation[i]) && 
 					(y <= lineLocation[i + 1])){
-				return_value = lineLocation[i] - lineLocation[i-1];
+				startLocation = lineLocation[i];
+				height = lineLocation[i + 1] - lineLocation[i];
+				beatIndex = i;
+				break;
 			}
 		}
-		return return_value;
+		return new int[]{startLocation, height, beatIndex};
 	}
 	
 	
 }
-
